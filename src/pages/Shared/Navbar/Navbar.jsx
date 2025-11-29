@@ -1,12 +1,12 @@
 const Navbar = () => {
 
     const navItems = <>
-        <li><a>Home</a></li>
-        <li><a>Join as Employee</a></li>
-        <li><a>Join as Manager</a></li>
+        <li><a className="text-blue-600 hover:text-blue-400 transition text-lg font-medium">Home</a></li>
+        <li><a className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</a></li>
+        <li><a className="hover:text-blue-600 transition text-lg font-medium">Join as Manager</a></li>
     </>
     return (
-        <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-md">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -18,7 +18,7 @@ const Navbar = () => {
                         {navItems}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-2xl text-blue-800 font-bold">X<span className="text-red-600">Y</span>Z</a>
+                <a className="btn btn-ghost text-4xl text-blue-900 font-bold">X<span className="text-red-600">Y</span>Z</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -27,7 +27,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn bg-blue-600 text-white hover:bg-blue-400">Log In</a>
+                <a className="btn bg-blue-600 text-white hover:bg-blue-700">Log In</a>
             </div>
         </div>
     );
