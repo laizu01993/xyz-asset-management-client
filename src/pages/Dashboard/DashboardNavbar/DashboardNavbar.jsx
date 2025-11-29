@@ -1,14 +1,20 @@
-import { Link } from "react-router-dom";
+const DashboardNavbar = () => {
 
-const Navbar = () => {
+    // Dynamic active class function
+    const activeClass = ({ isActive }) =>
+  isActive
+    ? "text-blue-600 font-semibold border-b-2 border-blue-600 pb-1"
+    : "hover:text-blue-600 transition font-medium";
+
 
     const navItems = <>
-        <li><a className="text-blue-600 hover:text-blue-400 transition text-lg font-medium">Home</a></li>
-    
-        <li><Link className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</Link></li>
-
-        <li><Link className="hover:text-blue-600 transition text-lg font-medium">Join as HR Manager</Link></li>
-        
+        <li><NavLink to="" className={activeClass}>Home</NavLink></li>
+        <li><NavLink to="" className={activeClass}>Asset List</NavLink></li>
+        <li><NavLink to="" className={activeClass}>Add an Asset</NavLink></li>
+        <li><NavLink to="" className={activeClass}>All Requests</NavLink></li>
+        <li><NavLink to="" className={activeClass}>My Employee List</NavLink></li>
+        <li><NavLink to="" className={activeClass}>Add an Employee</NavLink></li>
+        <li><NavLink to="" className={activeClass}>Profile</NavLink></li>
     </>
     return (
         <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-md">
@@ -38,4 +44,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default DashboardNavbar;
