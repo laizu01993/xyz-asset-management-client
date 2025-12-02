@@ -5,9 +5,9 @@ const Navbar = () => {
     const navItems = <>
         <li><a className="text-blue-600 hover:text-blue-400 transition text-lg font-medium">Home</a></li>
     
-        <li><Link className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</Link></li>
+        <li><Link to="/joinEmployee" className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</Link></li>
 
-        <li><Link className="hover:text-blue-600 transition text-lg font-medium">Join as HR Manager</Link></li>
+        <li><Link to="joinHRManager" className="hover:text-blue-600 transition text-lg font-medium">Join as HR Manager</Link></li>
         
     </>
     return (
@@ -32,7 +32,9 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn bg-blue-600 text-white hover:bg-blue-700">Log In</a>
+                <Link to="login">
+                <button className="btn bg-blue-600 text-white hover:bg-blue-700">Log In</button>
+                </Link>
             </div>
         </div>
     );
