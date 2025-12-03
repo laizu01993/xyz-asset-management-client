@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AuthContext } from "../../providers/AuthProvider";
+import { updateProfile } from "firebase/auth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const JoinHRManager = () => {
+    const axiosPublic = useAxiosPublic();
+
+    const navigate = useNavigate();
+
     const [selectedPackage, setSelectedPackage] = useState("");
 
-     const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     // show password state
     const [showPassword, setShowPassword] = useState(false);
+
+    const { createUser, updateUserProfile } = useContext(AuthContext);
 
 
     const handleSignUp = (e) => {
@@ -16,11 +27,11 @@ const JoinHRManager = () => {
         const form = e.target;
         const name = form.name.value;
         const companyName = form.companyName.value;
-        const photo = form.photo.value;
+        const companyLogo = form.companyLogo.value;
         const email = form.email.value;
         const password = form.password.value;
         const dob = e.target.dob.value;
-        
+
 
         // reset error
         setErrorMessage("");
@@ -30,6 +41,48 @@ const JoinHRManager = () => {
             setErrorMessage("Password must be at least 6 characters long");
             return;
         }
+
+        if (!selectedPackage) {
+            setErrorMessage("Please select a package");
+            return;
+        }
+
+        // create user in firebase auth
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+
+                // update firebase profile
+                updateUserProfile(name, photo)
+                    .then(() => {
+                        // create user entry in the database
+                        const newHR = {
+                            name,
+                            email,
+                            companyName,
+                            photo,
+                            dob,
+                            role: "hr"
+                        }
+                        axiosPublic.post('/users', newHR)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to the database')
+                                    form.reset();
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Your work has been saved",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('dashboard')
+                                }
+                            })
+                    })
+            })
+
     }
 
     return (
@@ -68,7 +121,7 @@ const JoinHRManager = () => {
                         <input
                             type="text"
                             placeholder="Enter company logo URL"
-                            name="photo"
+                            name="companyLogo"
                             className="input input-bordered w-full"
                         />
                     </div>
@@ -88,7 +141,7 @@ const JoinHRManager = () => {
                     <div className="relative">
                         <label className="label font-medium">Password</label>
                         <input
-                            type= {showPassword ? "text" : "password"}
+                            type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder="Enter password"
                             className="input input-bordered w-full"
@@ -129,7 +182,8 @@ const JoinHRManager = () => {
                     </div>
 
                     {/* Signup Button */}
-                    <button className="btn bg-blue-600 hover:bg-blue-700 text-white text-lg rounded-lg">
+                    <button
+                        type="submit" className="btn bg-blue-600 hover:bg-blue-700 text-white text-lg rounded-lg">
                         Signup as HR Manager
                     </button>
                 </form>

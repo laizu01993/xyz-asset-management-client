@@ -1,14 +1,24 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const Navbar = () => {
 
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+        .then(() =>{})
+        .catch(error => console.log(error))
+    }
+
     const navItems = <>
         <li><a className="text-blue-600 hover:text-blue-400 transition text-lg font-medium">Home</a></li>
-    
+
         <li><Link to="/joinEmployee" className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</Link></li>
 
         <li><Link to="joinHRManager" className="hover:text-blue-600 transition text-lg font-medium">Join as HR Manager</Link></li>
-        
+
     </>
     return (
         <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-md">
@@ -32,9 +42,35 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to="login">
-                <button className="btn bg-blue-600 text-white hover:bg-blue-700">Log In</button>
-                </Link>
+                {
+                    user ? <>
+                        <div className="flex items-center gap-3">
+
+                            {/* Profile Photo */}
+                            <img
+                                src={user.photoURL}
+                                alt="profile"
+                                className="w-10 h-10 rounded-full border"
+                            />
+
+                            {/* User Name */}
+                            <span className="font-semibold">{user.displayName}</span>
+
+                            {/* Logout Button */}
+                            <button
+                                onClick={handleLogOut}
+                                className="btn bg-red-600 text-white hover:bg-red-700"
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+                    </> :
+                        <><Link to="login">
+                            <button className="btn bg-blue-600 text-white hover:bg-blue-700">Log In</button>
+                        </Link></>
+                }
+
             </div>
         </div>
     );

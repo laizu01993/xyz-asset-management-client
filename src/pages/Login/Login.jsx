@@ -5,7 +5,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
-    const {logIn} = useContext(AuthContext);
+    const { logIn } = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -14,21 +14,26 @@ const Login = () => {
         const password = form.password.value;
         console.log(email, password);
 
-        logIn(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log(user)
-        })
-        .catch(error => 
-            console.log('error', error.message)
-        )
-
+        // clear previous error
         setErrorMessage("");
 
+        // validation
         if (!email || !password) {
             setErrorMessage("Email and password are required");
             return;
         }
+
+        // firebase login
+        logIn(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch((error) => {
+                console.log('error', error.message);
+                setErrorMessage(error.message)
+            })
+
     }
 
     return (
@@ -83,7 +88,7 @@ const Login = () => {
                 </form>
 
                 {/* Divider */}
-               
+
             </div>
         </div>
     );

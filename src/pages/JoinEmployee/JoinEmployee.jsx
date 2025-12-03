@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const JoinEmployee = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
+
+    const {createUser} = useContext(AuthContext);
 
     // show password state
     const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +31,12 @@ const JoinEmployee = () => {
             setErrorMessage("Password must be at least 6 characters long");
             return;
         }
+        // create user in firebase auth
+        createUser(email, password)
+        .then(result => {
+            const user = result.user;
+            console.log(user);
+        })
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100 px-4 py-10">
@@ -99,6 +108,7 @@ const JoinEmployee = () => {
 
                     {/* Signup Button */}
                     <button
+                    type="submit"
                         className="btn bg-blue-600 hover:bg-blue-700 text-white w-full mt-4 py-3 rounded-xl text-lg"
                     >
                         Sign Up
