@@ -1,12 +1,19 @@
 import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../providers/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const JoinEmployee = () => {
 
+    const axiosPublic = useAxiosPublic();
+
+    const navigate = useNavigate();
+
     const [errorMessage, setErrorMessage] = useState("");
 
-    const {createUser} = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
 
     // show password state
     const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +24,7 @@ const JoinEmployee = () => {
 
         const form = e.target;
         const name = form.name.value;
+        const photo = form.photo.value;
         const email = form.email.value;
         const password = form.password.value;
         const dob = e.target.dob.value;
@@ -33,10 +41,39 @@ const JoinEmployee = () => {
         }
         // create user in firebase auth
         createUser(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log(user);
-        })
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                // update firebase profile
+                updateUserProfile(name, photo)
+                    .then(() => {
+                        // create user entry in the database
+                        const newEmployee = {
+                            name,
+                            email,
+                            photo,
+                            dob,
+                            role: "employee",
+                            companyName,
+                            companyLogo
+                        }
+                        axiosPublic.post('/users', newEmployee)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to the database')
+                                    form.reset();
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Employee created successfully",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('dashboard')
+                                }
+                            })
+                    })
+            })
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100 px-4 py-10">
@@ -60,6 +97,18 @@ const JoinEmployee = () => {
                             type="text"
                             placeholder="Enter your full name"
                             name="name"
+                            className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    {/* Photo URL */}
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-1">Photo</label>
+                        <input
+                            type="text"
+                            placeholder="photoURL"
+                            name="photo"
                             className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -108,7 +157,7 @@ const JoinEmployee = () => {
 
                     {/* Signup Button */}
                     <button
-                    type="submit"
+                        type="submit"
                         className="btn bg-blue-600 hover:bg-blue-700 text-white w-full mt-4 py-3 rounded-xl text-lg"
                     >
                         Sign Up

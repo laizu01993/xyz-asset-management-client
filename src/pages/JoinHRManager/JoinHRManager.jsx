@@ -26,6 +26,7 @@ const JoinHRManager = () => {
 
         const form = e.target;
         const name = form.name.value;
+        const photo = form.photo.value;
         const companyName = form.companyName.value;
         const companyLogo = form.companyLogo.value;
         const email = form.email.value;
@@ -61,9 +62,10 @@ const JoinHRManager = () => {
                             name,
                             email,
                             companyName,
-                            photo,
+                            companyLogo,
                             dob,
-                            role: "hr"
+                            role: "hr",
+                            package: selectedPackage
                         }
                         axiosPublic.post('/users', newHR)
                             .then(res => {
@@ -73,7 +75,7 @@ const JoinHRManager = () => {
                                     Swal.fire({
                                         position: "top-end",
                                         icon: "success",
-                                        title: "Your work has been saved",
+                                        title:"HR manager created successfully",
                                         showConfirmButton: false,
                                         timer: 1500
                                     });
@@ -100,6 +102,16 @@ const JoinHRManager = () => {
                             type="text"
                             placeholder="Enter full name"
                             name="name"
+                            className="input input-bordered w-full"
+                        />
+                    </div>
+                    {/* Photo URL */}
+                    <div>
+                        <label className="label font-medium">Photo</label>
+                        <input
+                            type="text"
+                            placeholder="photoURL"
+                            name="photo"
                             className="input input-bordered w-full"
                         />
                     </div>
