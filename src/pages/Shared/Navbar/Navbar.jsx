@@ -1,25 +1,155 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
+import useUserData from "../../../hooks/useUserData";
 
 const Navbar = () => {
 
     const { user, logOut } = useContext(AuthContext);
 
+    const [userData] = useUserData();
+
     const handleLogOut = () => {
         logOut()
-        .then(() =>{})
-        .catch(error => console.log(error))
-    }
+            .then(() => { })
+            .catch(error => console.log(error))
+    };
 
-    const navItems = <>
+    // default nav for visitors
+    const guestNav = <>
         <li><a className="text-blue-600 hover:text-blue-400 transition text-lg font-medium">Home</a></li>
 
         <li><Link to="/joinEmployee" className="hover:text-blue-600 transition text-lg font-medium">Join as Employee</Link></li>
 
         <li><Link to="joinHRManager" className="hover:text-blue-600 transition text-lg font-medium">Join as HR Manager</Link></li>
+    </>;
 
-    </>
+    const activeClass = "text-blue-600 font-medium text-lg";
+    const normalClass = "text-lg font-medium text-black hover:text-blue-500";
+
+
+    // menu for employee
+    const employeeNav = <>
+        <li>
+            <NavLink
+                to="/dashboard/employeeHome"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Home
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/myAssets"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                My Assets
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/myTeam"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                My Team
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/requestAsset"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Request for an Asset
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/employeeProfile"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Profile
+            </NavLink>
+        </li>
+    </>;
+
+    // menu for HR manager
+    const hrNav = <>
+        <li>
+            <NavLink
+                to="/dashboard/hrHome"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Home
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/assetLists"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Asset List
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/addAsset"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Add an Asset
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/allRequests"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                All Requests
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/employeeLists"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                My Employee List
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/addEmployee"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Add an Employee
+            </NavLink>
+        </li>
+
+        <li>
+            <NavLink
+                to="/dashboard/hrProfile"
+                className={({ isActive }) => isActive ? activeClass : normalClass}
+            >
+                Profile
+            </NavLink>
+        </li>
+    </>;
+
+    // condition based on role
+    const navItems =
+    !user ? guestNav :
+    userData?.role === "hr" ? hrNav :
+    userData?.role === "employee" ? employeeNav :
+    guestNav;
+
+
     return (
         <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-md">
             <div className="navbar-start">

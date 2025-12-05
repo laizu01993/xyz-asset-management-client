@@ -79,7 +79,7 @@ const JoinHRManager = () => {
                                         showConfirmButton: false,
                                         timer: 1500
                                     });
-                                    // navigate('dashboard')
+                                    navigate('dashboard')
                                 }
                             })
                     })
