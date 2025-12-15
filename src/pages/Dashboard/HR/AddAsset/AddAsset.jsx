@@ -31,9 +31,9 @@ const AddAsset = () => {
       type: productType,
       quantity: productQuantity,
       availability: productQuantity > 0 ? "available" : "out of stock",
-      createdAt: new Date()
+      createdAt: new Date().toLocaleString()
     };
-    
+
     const assetRes = await axiosSecure.post('/assets', assetData);
     console.log(assetRes.data)
     if (assetRes.data.insertedId) {
