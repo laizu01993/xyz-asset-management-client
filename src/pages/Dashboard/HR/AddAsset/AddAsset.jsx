@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const AddAsset = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,6 +51,10 @@ const AddAsset = () => {
 
 
 return (
+  <>
+  <Helmet>
+    <title>HR | Add asset</title>
+  </Helmet>
   <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100 p-6">
     <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8 border border-blue-100">
       {/* Title */}
@@ -124,6 +129,7 @@ return (
       </form>
     </div>
   </div>
+  </>
 );
 };
 
