@@ -4,7 +4,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const JoinHRManager = () => {
@@ -205,6 +205,7 @@ const JoinHRManager = () => {
                             Signup as HR Manager
                         </button>
                     </form>
+                    <p className="justify-center flex text-red-500 py-4">Already Have an Account? <Link to="/login">Please Login</Link></p>
                 </div>
             </div>
         </>

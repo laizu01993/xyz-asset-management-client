@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 
 const Login = () => {
@@ -87,12 +88,11 @@ const Login = () => {
                         <button
                             type="submit"
                             className="btn bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-xl text-lg"
-                        >
-                            Login
+                        >Login
                         </button>
                     </form>
 
-                    {/* Divider */}
+                    <SocialLogin></SocialLogin>
 
                 </div>
             </div>

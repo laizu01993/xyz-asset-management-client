@@ -2,9 +2,10 @@ import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../providers/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const JoinEmployee = () => {
 
@@ -169,6 +170,8 @@ const JoinEmployee = () => {
                         </button>
 
                     </form>
+                    <p className="justify-center flex text-red-500 py-4">Already Have an Account? <Link className="font-medium" to="/login">Please Login</Link></p>
+                    <SocialLogin></SocialLogin>
                 </div>
             </div>
         </>
