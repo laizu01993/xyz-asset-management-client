@@ -2,12 +2,18 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
+import { useNavigate } from "react-router-dom";
+import useUserData from "../../hooks/useUserData";
 
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const { logIn } = useContext(AuthContext);
+
+    const [userData] = useUserData();
+
+    const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -28,8 +34,15 @@ const Login = () => {
         // firebase login
         logIn(email, password)
             .then(result => {
-                const user = result.user;
-                console.log(user)
+               if(userData?.role === "hr"){
+                navigate("/dashboard/hrHome");
+               }
+               else if(userData?.role === "employee"){
+                navigate("/dashboard/employeeHome");
+               }
+               else {
+                navigate("/")
+               }
             })
             .catch((error) => {
                 console.log('error', error.message);

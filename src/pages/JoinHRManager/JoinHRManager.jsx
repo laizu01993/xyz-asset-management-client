@@ -205,7 +205,7 @@ const JoinHRManager = () => {
                             Signup as HR Manager
                         </button>
                     </form>
-                    <p className="justify-center flex text-red-500 py-4">Already Have an Account? <Link to="/login">Please Login</Link></p>
+                    <p className="justify-center flex text-red-500 py-4">Already Have an Account? <Link className="font-medium" to="/login">Please Login</Link></p>
                 </div>
             </div>
         </>
