@@ -3,6 +3,7 @@ import { FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../../../providers/AuthProvider";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SocialLogin = () => {
 
@@ -12,19 +13,22 @@ const SocialLogin = () => {
 
     const handleGoogleSignIn = () => {
         googleSignIn()
-        .then(result =>{
-            console.log(result.user)
-            const userInfo = {
-                email: result.user?.email,
-                name: result.user?.displayName,
-                role: "employee"
-            }
-            axiosPublic.post('/users', userInfo)
-            .then(res => {
-                console.log(res.data);
-                navigate('/dashboard/employeeHome')
+            .then(result => {
+                console.log(result.user)
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName,
+                    role: "employee"
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        toast.success('Login successfull')
+                        navigate('/dashboard/employeeHome');
+                    })
+                    .catch(err => {
+                        toast.error('Login failed: ' + err.message);
+                    });
             })
-        })
     }
 
     return (

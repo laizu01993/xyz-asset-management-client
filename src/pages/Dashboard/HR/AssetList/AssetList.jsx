@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 const AssetList = () => {
     const axiosSecure = useAxiosSecure();
@@ -107,9 +108,11 @@ const AssetList = () => {
                                     </td>
                                     <td className="flex gap-2">
                                         <div className="tooltip" data-tip="Update Asset">
-                                            <button className="btn btn-sm btn-warning">
-                                                <FaEdit />
-                                            </button>
+                                            <Link to="/dashboard/updateAsset">
+                                                <button className="btn btn-sm btn-warning">
+                                                    <FaEdit />
+                                                </button>
+                                            </Link>
                                         </div>
 
                                         <div className="tooltip tooltip-error" data-tip="Delete Asset">

@@ -4,6 +4,8 @@ import { Helmet } from "react-helmet-async";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { useNavigate } from "react-router-dom";
 import useUserData from "../../hooks/useUserData";
+import { toast } from "react-toastify";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 
 const Login = () => {
@@ -12,6 +14,8 @@ const Login = () => {
     const { logIn } = useContext(AuthContext);
 
     const [userData] = useUserData();
+
+    const axiosPublic = useAxiosPublic();
 
     const navigate = useNavigate();
 
@@ -33,19 +37,24 @@ const Login = () => {
 
         // firebase login
         logIn(email, password)
-            .then(result => {
-               if(userData?.role === "hr"){
-                navigate("/dashboard/hrHome");
-               }
-               else if(userData?.role === "employee"){
-                navigate("/dashboard/employeeHome");
-               }
-               else {
-                navigate("/")
-               }
+            .then(async (result) => {
+                toast.success("Login successful");
+                const email = result.user.email;
+                const res = await axiosPublic.get(`/users/${email}`);
+                const role = res.data.role;
+               
+                setTimeout(() => {
+                    if(role === "hr") {
+                        navigate("/dashboard/hrHome");
+                    }
+                    else{
+                        navigate("/dashboard/employeeHome");
+                    }
+                })
             })
             .catch((error) => {
                 console.log('error', error.message);
+                toast.error(error.message)
                 setErrorMessage(error.message)
             })
 
