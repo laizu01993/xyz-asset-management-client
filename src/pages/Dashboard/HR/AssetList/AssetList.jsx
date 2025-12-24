@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AssetList = () => {
     const axiosSecure = useAxiosSecure();
@@ -22,6 +23,34 @@ const AssetList = () => {
             return res.data;
         },
     });
+
+    // Delete handler
+    const handleDeleteAsset = (asset) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosSecure.delete(`/assets/${asset._id}`);
+                if (res.data.deletedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        position: "top-end",
+                        title: `${asset.name} has been deleted!`,
+                        showConfirmButton: false,
+                        timer: 1500,
+                        icon: "success"
+                    });
+                }
+
+            }
+        });
+    }
 
     return (
         <>
@@ -108,7 +137,7 @@ const AssetList = () => {
                                     </td>
                                     <td className="flex gap-2">
                                         <div className="tooltip" data-tip="Update Asset">
-                                            <Link to="/dashboard/updateAsset">
+                                            <Link to={`/dashboard/updateAsset/${asset._id}`}>
                                                 <button className="btn btn-sm btn-warning">
                                                     <FaEdit />
                                                 </button>
@@ -116,7 +145,7 @@ const AssetList = () => {
                                         </div>
 
                                         <div className="tooltip tooltip-error" data-tip="Delete Asset">
-                                            <button className="btn btn-sm btn-error">
+                                            <button onClick={() => handleDeleteAsset(asset)} className="btn btn-sm btn-error">
                                                 <FaTrash />
                                             </button>
                                         </div>

@@ -66,9 +66,9 @@ export const router = createBrowserRouter([
         element: <HRRoute><AddAsset></AddAsset></HRRoute>
       },
       {
-        path: "updateAsset",
+        path: "updateAsset/:id",
         element: <HRRoute><UpdateAsset></UpdateAsset></HRRoute>
-      },
+      }, 
       {
         path: "allRequests",
         element: <HRRoute><AllRequests></AllRequests></HRRoute>
