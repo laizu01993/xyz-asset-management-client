@@ -66,7 +66,9 @@ const JoinHRManager = () => {
                             companyLogo,
                             dob,
                             role: "hr",
-                            package: selectedPackage
+                            package: selectedPackage,
+                            isPaid: false,
+                            createdAt: new Date().toLocaleString()
                         }
                         axiosPublic.post('/users', newHR)
                             .then(res => {

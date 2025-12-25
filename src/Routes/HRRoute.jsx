@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
-import useUserData from "../hooks/useUserData"; 
+import useUserData from "../hooks/useUserData";
 import { Navigate, useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
@@ -14,6 +14,7 @@ const HRRoute = ({ children }) => {
   // router location so we can redirect back after login
   const location = useLocation();
 
+
   // while auth or user-data is loading, show skeleton (avoid flicker / crashes)
   if (loading || isLoading) {
     return (
@@ -24,13 +25,24 @@ const HRRoute = ({ children }) => {
     );
   }
 
-  // if user is logged in and their role is "hr", allow access
-  if (user && userData?.role === "hr") {
-    return children;
+  // Not Logged in -->Login
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace></Navigate>
   }
 
-  // otherwise redirect to login and save intended path
-  return <Navigate to="/login" state={{ from: location }} replace />;
+  // Not HR → block
+  if (userData?.role !== "hr") {
+    return <Navigate to="/" replace />;
+  }
+
+  // HR but not paid → payment page
+  if (!userData?.isPaid) {
+    return <Navigate to="/payment" replace />;
+  }
+
+  // HR + paid → allow
+  return children;
 };
+
 
 export default HRRoute;
