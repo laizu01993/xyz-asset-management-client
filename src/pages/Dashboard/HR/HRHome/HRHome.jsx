@@ -1,6 +1,10 @@
+import PendingRequests from "./PendingRequests";
+
 const HRHome = () => {
     return (
-        <div>HRHome</div>
+        <div className="space-y-6 p-6">
+            <PendingRequests></PendingRequests>
+        </div>
     );
 };
 
