@@ -15,7 +15,7 @@ const TopRequestedAssets = () => {
     })
     return (
         <div className="bg-white p-6 rounded-xl shadow">
-            <h3 className="text-xl font-bold text-blue-700 text-center mb-4">Top Requested Assets</h3>
+            <h3 className="text-2xl font-bold text-blue-700 text-center mb-4">Top Requested Assets</h3>
 
             {topAssets.length === 0 ? (<p className="text-gray-400">No requests yet</p>) :
                 (<ul className="space-y-3">

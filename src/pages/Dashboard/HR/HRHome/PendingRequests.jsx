@@ -23,7 +23,7 @@ const PendingRequests = () => {
 
     return (
         <div className="bg-white p-5 rounded-xl shadow">
-            <h2 className="text-xl font-bold mb-4 text-blue-700">
+            <h2 className="text-2xl font-bold mb-4 text-blue-700">
                 Pending Requests
             </h2>
 
