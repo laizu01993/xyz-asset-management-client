@@ -1,6 +1,7 @@
 
 import LimitedStockItems from "./LimitedStockItems";
 import PendingRequests from "./PendingRequests";
+import RequestTypePieChart from "./RequestTypePieChart";
 import TopRequestedAssets from "./TopRequestedAssets";
 
 const HRHome = () => {
@@ -9,6 +10,7 @@ const HRHome = () => {
             <PendingRequests></PendingRequests>
             <TopRequestedAssets></TopRequestedAssets>
            <LimitedStockItems></LimitedStockItems>
+           <RequestTypePieChart></RequestTypePieChart>
         </div>
     );
 };
