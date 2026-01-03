@@ -1,5 +1,3 @@
-
-import AssetUtilization from "./AssetUtilization";
 import LimitedStockItems from "./LimitedStockItems";
 import PendingRequests from "./PendingRequests";
 import RequestTypePieChart from "./RequestTypePieChart";
@@ -8,12 +6,10 @@ import TopRequestedAssets from "./TopRequestedAssets";
 const HRHome = () => {
     return (
         <div className="space-y-6 p-6">
-            <AssetUtilization></AssetUtilization>
             <RequestTypePieChart></RequestTypePieChart>
             <PendingRequests></PendingRequests>
             <TopRequestedAssets></TopRequestedAssets>
            <LimitedStockItems></LimitedStockItems>
-           
         </div>
     );
 };
