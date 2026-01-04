@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../providers/AuthProvider";
-import { updateProfile } from "firebase/auth";
+
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ const JoinHRManager = () => {
         const companyLogo = form.companyLogo.value;
         const email = form.email.value;
         const password = form.password.value;
-        const dob = e.target.dob.value;
+        const dob = form.dob.value;
 
 
         // reset error
