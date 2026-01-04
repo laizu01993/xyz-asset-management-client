@@ -56,8 +56,12 @@ const JoinEmployee = () => {
                             photo,
                             dob,
                             role: "employee",
-                            companyName,
-                            companyLogo
+                            isTeamMember: false,
+                            companyName: null,
+                            companyLogo: null,
+                            companyId: null,
+                            createdAt: new Date().toLocaleString()
+
                         }
                         axiosPublic.post('/users', newEmployee)
                             .then(res => {

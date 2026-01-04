@@ -62,11 +62,13 @@ const JoinHRManager = () => {
                         const newHR = {
                             name,
                             email,
+                            companyId: crypto.randomUUID(),
                             companyName,
                             companyLogo,
                             dob,
                             role: "hr",
                             package: selectedPackage,
+                            teamLimit: selectedPackage === "5" ? 5 : selectedPackage === "8" ? 10 : 20,
                             isPaid: false,
                             createdAt: new Date().toLocaleString()
                         }
