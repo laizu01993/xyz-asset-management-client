@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 
 const AddEmployee = () => {
@@ -18,7 +19,7 @@ const AddEmployee = () => {
     });
 
     /* ================= FREE EMPLOYEES ================= */
-    const { data: employees = [] } = useQuery({
+    const { data: employees = [], refetch: refetchEmployees } = useQuery({
         queryKey: ["free-employees"],
         queryFn: async () => {
             const res = await axiosSecure.get("/hr/free-employees");
@@ -40,6 +41,7 @@ const AddEmployee = () => {
         await axiosSecure.patch(`/hr/add-employee/${id}`);
         Swal.fire("Added!", "Employee added to team", "success");
         refetch();
+        refetchEmployees();
     };
 
     /* ================= ADD MULTIPLE ================= */
@@ -68,9 +70,11 @@ const AddEmployee = () => {
                 </div>
 
                 {!packageInfo.canAddMore && (
-                    <button className="btn btn-warning">
-                        Upgrade Package
-                    </button>
+                    <Link to="/dashboard/upgradePackage">
+                        <button className="btn btn-warning">
+                            Upgrade Package
+                        </button>
+                    </Link>
                 )}
             </div>
 
@@ -112,12 +116,14 @@ const AddEmployee = () => {
                             ))}
                         </div>
 
+
                         <button
                             onClick={handleAddSelected}
                             className="btn btn-success mt-6"
                         >
                             Add Selected Members to Team
                         </button>
+
                     </>
                 )}
             </div>
