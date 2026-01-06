@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-
 import { useNavigate } from "react-router-dom";
+
+import { motion } from "framer-motion";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const UpgradePackage = () => {
@@ -39,26 +40,40 @@ const UpgradePackage = () => {
     };
 
     return (
-        <div className="p-6 max-w-5xl mx-auto">
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="p-6 max-w-5xl mx-auto"
+        >
             <h1 className="text-3xl font-bold text-center mb-8 text-blue-700">
                 Upgrade Your Package
             </h1>
 
             {/* ================= CURRENT STATUS ================= */}
-            <div className="bg-white shadow rounded-xl p-6 mb-10 text-center">
+            <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white shadow rounded-xl p-6 mb-10 text-center"
+            >
                 <p className="text-lg">
                     Current Team Size:{" "}
                     <span className="font-bold text-blue-600">
                         {packageInfo.teamCount} / {packageInfo.teamLimit}
                     </span>
                 </p>
-            </div>
+            </motion.div>
 
             {/* ================= PACKAGE CARDS ================= */}
             <div className="grid md:grid-cols-3 gap-6">
 
                 {/* ===== PACKAGE 1 ===== */}
-                <div className="border rounded-xl p-6 text-center shadow">
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="border rounded-xl p-6 text-center shadow"
+                >
                     <h2 className="text-xl font-bold">Basic</h2>
                     <p className="text-3xl font-bold my-4">$5</p>
                     <p className="mb-6">5 Team Members</p>
@@ -70,10 +85,14 @@ const UpgradePackage = () => {
                     >
                         Upgrade
                     </button>
-                </div>
+                </motion.div>
 
                 {/* ===== PACKAGE 2 ===== */}
-                <div className="border rounded-xl p-6 text-center shadow">
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="border rounded-xl p-6 text-center shadow"
+                >
                     <h2 className="text-xl font-bold">Pro</h2>
                     <p className="text-3xl font-bold my-4">$8</p>
                     <p className="mb-6">10 Team Members</p>
@@ -85,10 +104,14 @@ const UpgradePackage = () => {
                     >
                         Upgrade
                     </button>
-                </div>
+                </motion.div>
 
                 {/* ===== PACKAGE 3 ===== */}
-                <div className="border rounded-xl p-6 text-center shadow">
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="border rounded-xl p-6 text-center shadow"
+                >
                     <h2 className="text-xl font-bold">Premium</h2>
                     <p className="text-3xl font-bold my-4">$15</p>
                     <p className="mb-6">20 Team Members</p>
@@ -100,10 +123,10 @@ const UpgradePackage = () => {
                     >
                         Upgrade
                     </button>
-                </div>
+                </motion.div>
 
             </div>
-        </div>
+        </motion.div>
     );
 };
 
