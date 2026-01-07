@@ -1,6 +1,10 @@
+import Profile from "../../../Shared/Profile/Profile";
+
 const HRProfile = () => {
     return (
-        <div>HR Profile</div>
+        <div>
+            <Profile></Profile>
+        </div>
     );
 };
 

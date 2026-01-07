@@ -1,6 +1,10 @@
+import Profile from "../../../Shared/Profile/Profile";
+
 const EmployeeProfile = () => {
     return (
-        <div>Employee Profile</div>
+        <div>
+            <Profile></Profile>
+        </div>
     );
 };
 
