@@ -30,7 +30,7 @@ const JoinHRManager = () => {
         const photo = form.photo.value;
         const companyName = form.companyName.value;
         const companyLogo = form.companyLogo.value;
-        const email = form.email.value;
+        const email = form.email.value.toLowerCase().trim();
         const password = form.password.value;
         const dob = form.dob.value;
 

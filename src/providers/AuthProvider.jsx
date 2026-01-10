@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
 
-    const googleProvider = new GoogleAuthProvider(); 
+    const googleProvider = new GoogleAuthProvider();
 
     const axiosPublic = useAxiosPublic();
 
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
     }
 
     // sign in with google
-    const googleSignIn = () =>{
+    const googleSignIn = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     }
@@ -53,16 +53,38 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
+            // if (currentUser) {
+            //     // get token and store client
+            //     const userInfo = {
+
+            //         email: currentUser.email.toLowerCase().trim() };
+            //     axiosPublic.post('/jwt', userInfo)
+            //         .then(res => {
+            //             if (res.data.token) {
+            //                 localStorage.setItem('access-token', res.data.token)
+            //             }
+            //         })
+            // }
             if (currentUser) {
-                // get token and store client
-                const userInfo = { email: currentUser.email };
-                axiosPublic.post('/jwt', userInfo)
+                const userInfo = {
+                    name: currentUser.displayName || "Anonymous",
+                    email: currentUser.email.toLowerCase().trim(),
+                    role: "employee" // default role
+                };
+
+                // 1️. ensure MongoDB user exists
+                axiosPublic.post('/users', userInfo);
+
+                // 2️. get JWT
+                axiosPublic.post('/jwt', { email: userInfo.email })
                     .then(res => {
                         if (res.data.token) {
-                            localStorage.setItem('access-token', res.data.token)
+                            localStorage.setItem('access-token', res.data.token);
                         }
-                    })
+                    });
             }
+
+
             else {
                 // remove token
                 localStorage.removeItem('access-token')

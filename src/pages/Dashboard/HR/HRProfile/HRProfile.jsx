@@ -1,11 +1,11 @@
-import Profile from "../../../Shared/Profile/Profile";
+import Profile from "../../../Shared/Profile/Profile"
 
-const HRProfile = () => {
+
+const HrProfile = () => {
     return (
         <div>
             <Profile></Profile>
         </div>
     );
 };
-
-export default HRProfile;
+export default HrProfile;
