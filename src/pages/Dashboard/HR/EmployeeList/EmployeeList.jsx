@@ -3,6 +3,7 @@ import { FaUserTie, FaUser, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Skeleton from "react-loading-skeleton";
+import { Helmet } from "react-helmet-async";
 
 const EmployeeList = () => {
     const axiosSecure = useAxiosSecure();
@@ -38,78 +39,83 @@ const EmployeeList = () => {
         </div>
 
     return (
-        <div className="p-6">
-            <h2 className="text-3xl text-center font-bold text-blue-700 mb-6">
-                My Employee Lists
-            </h2>
+        <>
+            <Helmet>
+                <title>HR | Employee Lists</title>
+            </Helmet>
+            <div className="p-6">
+                <h2 className="text-3xl text-center font-bold text-blue-700 mb-6">
+                    My Employee Lists
+                </h2>
 
-            {/* Empty State */}
-            {employees.length === 0 ? (
-                <div className="text-center bg-white rounded-xl shadow p-12">
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/7486/7486800.png"
-                        alt="No employees"
-                        className="w-40 mx-auto mb-4 opacity-70"
-                    />
-                    <h3 className="text-xl font-semibold text-gray-700">
-                        No team members found
-                    </h3>
-                    <p className="text-gray-500 mt-2">
-                        Employees will appear here once they join your company
-                    </p>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {employees.map(emp => (
-                        <div
-                            key={emp._id}
-                            className="bg-white rounded-xl shadow p-5 flex items-center justify-between"
-                        >
-                            {/* Left */}
-                            <div className="flex items-center gap-4">
-                                <img
-                                    src={emp.photo || "https://i.ibb.co/ZYW3VTp/brown-brim.png"}
-                                    alt={emp.name}
-                                    className="w-14 h-14 rounded-full object-cover"
-                                />
+                {/* Empty State */}
+                {employees.length === 0 ? (
+                    <div className="text-center bg-white rounded-xl shadow p-12">
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/7486/7486800.png"
+                            alt="No employees"
+                            className="w-40 mx-auto mb-4 opacity-70"
+                        />
+                        <h3 className="text-xl font-semibold text-gray-700">
+                            No team members found
+                        </h3>
+                        <p className="text-gray-500 mt-2">
+                            Employees will appear here once they join your company
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {employees.map(emp => (
+                            <div
+                                key={emp._id}
+                                className="bg-white rounded-xl shadow p-5 flex items-center justify-between"
+                            >
+                                {/* Left */}
+                                <div className="flex items-center gap-4">
+                                    <img
+                                        src={emp.photo || "https://i.ibb.co/ZYW3VTp/brown-brim.png"}
+                                        alt={emp.name}
+                                        className="w-14 h-14 rounded-full object-cover"
+                                    />
 
-                                <div>
-                                    <h3 className="font-semibold text-lg">
-                                        {emp.name}
-                                    </h3>
-                                    <p className="text-sm text-gray-500">
-                                        {emp.email}
-                                    </p>
+                                    <div>
+                                        <h3 className="font-semibold text-lg">
+                                            {emp.name}
+                                        </h3>
+                                        <p className="text-sm text-gray-500">
+                                            {emp.email}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Right */}
+                                <div className="flex items-center gap-4">
+                                    {emp.role === "hr" ? (
+                                        <FaUserTie
+                                            className="text-blue-600 text-xl"
+                                            title="HR Manager"
+                                        />
+                                    ) : (
+                                        <FaUser
+                                            className="text-gray-600 text-xl"
+                                            title="Employee"
+                                        />
+                                    )}
+
+                                    <button
+                                        onClick={() => handleRemove(emp._id)}
+                                        className="btn btn-sm btn-error"
+                                        title="Remove from team"
+                                    >
+                                        <FaTrash />
+                                    </button>
                                 </div>
                             </div>
-
-                            {/* Right */}
-                            <div className="flex items-center gap-4">
-                                {emp.role === "hr" ? (
-                                    <FaUserTie
-                                        className="text-blue-600 text-xl"
-                                        title="HR Manager"
-                                    />
-                                ) : (
-                                    <FaUser
-                                        className="text-gray-600 text-xl"
-                                        title="Employee"
-                                    />
-                                )}
-
-                                <button
-                                    onClick={() => handleRemove(emp._id)}
-                                    className="btn btn-sm btn-error"
-                                    title="Remove from team"
-                                >
-                                    <FaTrash />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </>
 
     );
 };

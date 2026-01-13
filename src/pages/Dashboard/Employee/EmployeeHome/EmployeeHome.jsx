@@ -4,6 +4,7 @@ import MyMonthlyRequests from "./MyMonthlyRequests";
 import MyPendingRequests from "./MyPendingRequests";
 import SystemNotices from "./SystemNotices";
 import Skeleton from "react-loading-skeleton";
+import { Helmet } from "react-helmet-async";
 
 // const EmployeeHome = () => {
 //     return (
@@ -59,11 +60,16 @@ const EmployeeHome = () => {
 
     // Affiliated employee
     return (
-        <div className="space-y-8 p-6">
-            <MyPendingRequests />
-            <MyMonthlyRequests />
-            <SystemNotices />
-        </div>
+        <>
+            <Helmet>
+                <title>Employee | Home</title>
+            </Helmet>
+            <div className="space-y-8 p-6">
+                <MyPendingRequests />
+                <MyMonthlyRequests />
+                <SystemNotices />
+            </div>
+        </>
     );
 };
 

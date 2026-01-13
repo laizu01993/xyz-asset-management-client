@@ -3,6 +3,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 
 const AddEmployee = () => {
@@ -60,74 +61,79 @@ const AddEmployee = () => {
     };
 
     return (
-        <div className="p-6 space-y-8">
+        <>
+            <Helmet>
+                <title>HR | Add Employee</title>
+            </Helmet>
+            <div className="p-6 space-y-8">
 
-            {/* ================= PACKAGE SECTION ================= */}
-            <div className="bg-white rounded-xl shadow p-6 flex justify-between items-center">
-                <div>
-                    <h2 className="text-xl font-bold text-blue-700">Team Package</h2>
-                    <p>Members: {packageInfo.teamCount} / {packageInfo.teamLimit}</p>
+                {/* ================= PACKAGE SECTION ================= */}
+                <div className="bg-white rounded-xl shadow p-6 flex justify-between items-center">
+                    <div>
+                        <h2 className="text-xl font-bold text-blue-700">Team Package</h2>
+                        <p>Members: {packageInfo.teamCount} / {packageInfo.teamLimit}</p>
+                    </div>
+
+                    {!packageInfo.canAddMore && (
+                        <Link to="/dashboard/upgradePackage">
+                            <button className="btn btn-warning">
+                                Upgrade Package
+                            </button>
+                        </Link>
+                    )}
                 </div>
 
-                {!packageInfo.canAddMore && (
-                    <Link to="/dashboard/upgradePackage">
-                        <button className="btn btn-warning">
-                            Upgrade Package
-                        </button>
-                    </Link>
-                )}
-            </div>
+                {/* ================= EMPLOYEE LIST ================= */}
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-xl font-bold mb-4">Available Employees</h2>
 
-            {/* ================= EMPLOYEE LIST ================= */}
-            <div className="bg-white rounded-xl shadow p-6">
-                <h2 className="text-xl font-bold mb-4">Available Employees</h2>
-
-                {employees.length === 0 ? (
-                    <p className="text-gray-500">No available employees</p>
-                ) : (
-                    <>
-                        <div className="grid md:grid-cols-2 gap-4">
-                            {employees.map(emp => (
-                                <div
-                                    key={emp._id}
-                                    className="border rounded-lg p-4 flex justify-between items-center"
-                                >
-                                    <div className="flex gap-4 items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedIds.includes(emp._id)}
-                                            onChange={() => handleSelect(emp._id)}
-                                        />
-                                        <img
-                                            src={emp.photo}
-                                            className="w-12 h-12 rounded-full"
-                                            alt=""
-                                        />
-                                        <p className="font-medium">{emp.name}</p>
-                                    </div>
-
-                                    <button
-                                        onClick={() => handleAddOne(emp._id)}
-                                        className="btn btn-sm btn-primary"
+                    {employees.length === 0 ? (
+                        <p className="text-gray-500">No available employees</p>
+                    ) : (
+                        <>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                {employees.map(emp => (
+                                    <div
+                                        key={emp._id}
+                                        className="border rounded-lg p-4 flex justify-between items-center"
                                     >
-                                        Add
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
+                                        <div className="flex gap-4 items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedIds.includes(emp._id)}
+                                                onChange={() => handleSelect(emp._id)}
+                                            />
+                                            <img
+                                                src={emp.photo}
+                                                className="w-12 h-12 rounded-full"
+                                                alt=""
+                                            />
+                                            <p className="font-medium">{emp.name}</p>
+                                        </div>
+
+                                        <button
+                                            onClick={() => handleAddOne(emp._id)}
+                                            className="btn btn-sm btn-primary"
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
 
 
-                        <button
-                            onClick={handleAddSelected}
-                            className="btn btn-success mt-6"
-                        >
-                            Add Selected Members to Team
-                        </button>
+                            <button
+                                onClick={handleAddSelected}
+                                className="btn btn-success mt-6"
+                            >
+                                Add Selected Members to Team
+                            </button>
 
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

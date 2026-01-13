@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { User, Shield } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const MyTeam = () => {
     const axiosSecure = useAxiosSecure();
@@ -33,53 +34,58 @@ const MyTeam = () => {
     }
 
     return (
-        <div>
-            <h2 className="text-3xl text-center p-6 font-bold text-blue-700 mb-6">
-                My Team
-            </h2>
+        <>
+            <Helmet>
+                <title>Employee | My Team</title>
+            </Helmet>
+            <div>
+                <h2 className="text-3xl text-center p-6 font-bold text-blue-700 mb-6">
+                    My Team
+                </h2>
 
-            <div className="grid gap-6 sm:grid-cols-2">
-                {team.map((member) => (
-                    <motion.div
-                        key={member._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="bg-white border rounded-xl shadow-sm hover:shadow-lg transition"
-                    >
-                        <div className="p-5 flex items-center gap-4">
-                            {/* Avatar */}
-                            <img
-                                src={member.photo || "https://i.ibb.co/4pDNDk1/avatar.png"}
-                                alt={member.name}
-                                className="w-14 h-14 rounded-full object-cover border"
-                            />
+                <div className="grid gap-6 sm:grid-cols-2">
+                    {team.map((member) => (
+                        <motion.div
+                            key={member._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4 }}
+                            className="bg-white border rounded-xl shadow-sm hover:shadow-lg transition"
+                        >
+                            <div className="p-5 flex items-center gap-4">
+                                {/* Avatar */}
+                                <img
+                                    src={member.photo || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                                    alt={member.name}
+                                    className="w-14 h-14 rounded-full object-cover border"
+                                />
 
-                            {/* Info */}
-                            <div className="flex-1">
-                                <h3 className="font-semibold text-lg">
-                                    {member.name}
-                                </h3>
+                                {/* Info */}
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-lg">
+                                        {member.name}
+                                    </h3>
 
-                                <div className="flex items-center gap-2 text-sm text-gray-500">
-                                    {member.role === "hr" ? (
-                                        <>
-                                            <Shield size={16} className="text-blue-600" />
-                                            <span>HR</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <User size={16} />
-                                            <span>Employee</span>
-                                        </>
-                                    )}
+                                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                                        {member.role === "hr" ? (
+                                            <>
+                                                <Shield size={16} className="text-blue-600" />
+                                                <span>HR</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <User size={16} />
+                                                <span>Employee</span>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </motion.div>
-                ))}
+                        </motion.div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
