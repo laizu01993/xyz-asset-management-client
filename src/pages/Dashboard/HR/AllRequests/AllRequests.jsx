@@ -11,7 +11,7 @@ const AllRequests = () => {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    // 🔹 Debounce search input
+    // Debounce search input
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(search);
@@ -30,7 +30,7 @@ const AllRequests = () => {
         keepPreviousData: true,
     });
 
-    // 🔹 Approve handler
+    // Approve handler
     const handleApprove = async (id) => {
         const confirm = await Swal.fire({
             title: "Approve request?",
@@ -45,7 +45,7 @@ const AllRequests = () => {
         refetch();
     };
 
-    // 🔹 Reject handler
+    //  Reject handler
     const handleReject = async (id) => {
         const confirm = await Swal.fire({
             title: "Reject request?",

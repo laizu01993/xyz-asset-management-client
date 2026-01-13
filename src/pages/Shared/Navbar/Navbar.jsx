@@ -41,10 +41,10 @@ const Navbar = () => {
 
         <li>
             <NavLink
-                to="/dashboard/myAssets"
+                to="/dashboard/myRequestAssets"
                 className={({ isActive }) => isActive ? activeClass : normalClass}
             >
-                My Assets
+                My Requested Assets
             </NavLink>
         </li>
 

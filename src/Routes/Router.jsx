@@ -17,12 +17,12 @@ import AddEmployee from "../pages/Dashboard/HR/AddEmployee/AddEmployee";
 import HRProfile from "../pages/Dashboard/HR/HRProfile/HRProfile";
 import EmployeeRoute from "./EmployeeRoute";
 import EmployeeHome from "../pages/Dashboard/Employee/EmployeeHome/EmployeeHome";
-import MyAssets from "../pages/Dashboard/Employee/MyAssets/MyAssets";
 import MyTeam from "../pages/Dashboard/Employee/MyTeam/MyTeam";
 import RequestAsset from "../pages/Dashboard/Employee/RequestAsset/RequestAsset";
 import EmployeeProfile from "../pages/Dashboard/Employee/EmployeeProfile/EmployeeProfile";
 import UpdateAsset from "../pages/Dashboard/HR/UpdateAsset/UpdateAsset";
 import UpgradePackage from "../pages/Dashboard/HR/AddEmployee/UpgradePackage";
+import MyRequestedAssets from "../pages/Dashboard/Employee/MyRequestedAssets/MyRequestedAssets";
 
 
 export const router = createBrowserRouter([
@@ -96,8 +96,8 @@ export const router = createBrowserRouter([
         element: <EmployeeRoute><EmployeeHome></EmployeeHome></EmployeeRoute>
       },
       {
-        path: "myAssets",
-        element: <EmployeeRoute><MyAssets></MyAssets></EmployeeRoute>
+        path: "myRequestAssets",
+        element: <EmployeeRoute><MyRequestedAssets></MyRequestedAssets></EmployeeRoute>
       },
       {
         path: "myTeam",
