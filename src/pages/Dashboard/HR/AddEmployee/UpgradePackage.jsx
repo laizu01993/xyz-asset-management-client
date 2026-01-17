@@ -25,18 +25,17 @@ const UpgradePackage = () => {
             text: `Upgrade to ${newLimit} members for $${price}?`,
             icon: "question",
             showCancelButton: true,
-            confirmButtonText: "Yes, Upgrade"
+            confirmButtonText: "Proceed to Payment"
         });
 
         if (!confirm.isConfirmed) return;
-
-        await axiosSecure.patch("/hr/upgrade-package", {
-            newLimit
+        navigate("/dashboard/payment", {
+            state: {
+                amount: price,
+                teamLimit: newLimit,
+                from: "upgrade"
+            }
         });
-
-        Swal.fire("Success!", "Package upgraded successfully", "success");
-        refetch();
-        navigate("/dashboard/addEmployee");
     };
 
     return (

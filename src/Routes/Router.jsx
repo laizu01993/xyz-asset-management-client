@@ -23,6 +23,7 @@ import EmployeeProfile from "../pages/Dashboard/Employee/EmployeeProfile/Employe
 import UpdateAsset from "../pages/Dashboard/HR/UpdateAsset/UpdateAsset";
 import UpgradePackage from "../pages/Dashboard/HR/AddEmployee/UpgradePackage";
 import MyRequestedAssets from "../pages/Dashboard/Employee/MyRequestedAssets/MyRequestedAssets";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 
 export const router = createBrowserRouter([
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
     element: <DashboardLayout></DashboardLayout>,
     children: [
       // Admin Routes
+      {
+        path: "payment",
+        element:<HRRoute><Payment></Payment></HRRoute>
+      },
       {
         path: "hrHome",
         element: <HRRoute><HRHome></HRHome></HRRoute>

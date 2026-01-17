@@ -58,6 +58,13 @@ const JoinHRManager = () => {
                 // update firebase profile
                 updateUserProfile(name, photo)
                     .then(() => {
+                        const packageAmount =
+                            selectedPackage === "5" ? 5 :
+                                selectedPackage === "8" ? 8 : 15;
+
+                        const teamLimit =
+                            selectedPackage === "5" ? 5 :
+                                selectedPackage === "8" ? 10 : 20;
                         // create user entry in the database
                         const newHR = {
                             name,
@@ -68,9 +75,9 @@ const JoinHRManager = () => {
                             dob,
                             role: "hr",
                             package: selectedPackage,
-                            teamLimit: selectedPackage === "5" ? 5 : selectedPackage === "8" ? 10 : 20,
+                            teamLimit,
                             isPaid: false,
-                            createdAt: new Date().toLocaleString()
+                            createdAt: new Date()
                         }
                         axiosPublic.post('/users', newHR)
                             .then(res => {
@@ -78,13 +85,22 @@ const JoinHRManager = () => {
                                     console.log('user added to the database')
                                     form.reset();
                                     Swal.fire({
-                                        position: "top-end",
                                         icon: "success",
-                                        title: "HR manager created successfully",
+                                        title: "Account created successfully",
+                                        text: "Please complete payment to activate your account",
+                                        timer: 2000,
                                         showConfirmButton: false,
-                                        timer: 1500
                                     });
-                                    navigate('/dashboard/hrHome')
+                                    // Redirect to payment page
+                                    navigate("/dashboard/payment", {
+                                        state: {
+                                            role: "hr",
+                                            packageName: selectedPackage,
+                                            amount: packageAmount,
+                                            teamLimit,
+                                            from: "signup"
+                                        }
+                                    });
                                 }
                             })
                     })
