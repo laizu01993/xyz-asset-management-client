@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 import useUserData from "../../../hooks/useUserData";
@@ -8,6 +8,10 @@ const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
 
     const [userData] = useUserData();
+
+    const [open, setOpen] = useState(false);
+    let closeTimeout;
+
 
     const handleLogOut = () => {
         logOut()
@@ -144,22 +148,44 @@ const Navbar = () => {
 
     // condition based on role
     const navItems =
-    !user ? guestNav :
-    userData?.role === "hr" ? hrNav :
-    userData?.role === "employee" ? employeeNav :
-    guestNav;
+        !user ? guestNav :
+            userData?.role === "hr" ? hrNav :
+                userData?.role === "employee" ? employeeNav :
+                    guestNav;
 
 
     return (
         <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-md">
             <div className="navbar-start">
-                <div className="dropdown">
+                {/* <div className="dropdown dropdown-hover dropdown-bottom"> */}
+                <div
+                    className="relative lg:hidden"
+                    onMouseEnter={() => {
+                        clearTimeout(closeTimeout);
+                        setOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                        closeTimeout = setTimeout(() => {
+                            setOpen(false);
+                        }, 200);
+                    }}
+                >
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                     </div>
+                    {/* <ul
+                        tabIndex={0}
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow transition-all duration-300">
+                        {navItems}
+                    </ul>
+                </div> */}
+                    {/* Dropdown Menu */}
                     <ul
-                        tabIndex="-1"
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        className={`absolute left-0 mt-3 w-52 bg-base-100 rounded-box shadow z-50
+      transition-all duration-800 ease-in-out
+      ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"}
+    `}
+                    >
                         {navItems}
                     </ul>
                 </div>
