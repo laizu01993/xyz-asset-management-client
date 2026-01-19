@@ -67,7 +67,7 @@ const AllRequests = () => {
                 <title>HR | All Requests</title>
             </Helmet>
             <div className="p-6 bg-white shadow-xl rounded-2xl">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4">
+                <h2 className="text-2xl font-bold text-center text-blue-700 mb-4">
                     All Asset Requests
                 </h2>
 

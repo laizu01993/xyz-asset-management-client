@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import Pagination from "../../../Shared/Pagination/Pagination";
 
 const AssetList = () => {
     const axiosSecure = useAxiosSecure();
@@ -14,15 +15,41 @@ const AssetList = () => {
     const [type, setType] = useState("");
     const [sort, setSort] = useState("");
 
-    const { data: assets = [], refetch, isLoading } = useQuery({
-        queryKey: ["assets", search, status, type, sort],
+    const [page, setPage] = useState(1);
+    const limit = 10;
+
+
+    // const { data: assets = [], refetch, isLoading } = useQuery({
+    //     queryKey: ["assets", search, status, type, sort],
+    //     queryFn: async () => {
+    //         const res = await axiosSecure.get(
+    //             `/assets?search=${search}&status=${status}&type=${type}&sort=${sort}`
+    //         );
+    //         return res.data;
+    //     },
+    // });
+
+    const { data = {}, refetch, isLoading } = useQuery({
+        queryKey: ["assets", search, status, type, sort, page],
         queryFn: async () => {
-            const res = await axiosSecure.get(
-                `/assets?search=${search}&status=${status}&type=${type}&sort=${sort}`
-            );
+            const res = await axiosSecure.get("/assets", {
+                params: {
+                    search,
+                    status,
+                    type,
+                    sort,
+                    page,
+                    limit
+                }
+            });
             return res.data;
         },
     });
+
+    const assets = data.assets || [];
+    const total = data.total || 0;
+    const totalPages = Math.ceil(total / limit);
+
 
     // Delete handler
     const handleDeleteAsset = (asset) => {
@@ -118,7 +145,7 @@ const AssetList = () => {
                         <tbody>
                             {assets.map((asset, index) => (
                                 <tr key={asset._id}>
-                                    <td>{index + 1}</td>
+                                    <td>{(page - 1) * limit + index + 1}</td>
                                     <td className="font-semibold">{asset.name}</td>
                                     <td>{asset.type}</td>
                                     <td>{asset.quantity}</td>
@@ -155,12 +182,20 @@ const AssetList = () => {
                         </tbody>
                     </table>
 
+                    <Pagination
+                        page={page}
+                        setPage={setPage}
+                        totalPages={totalPages}
+                    />
+
+
                     {/* Empty State */}
                     {!isLoading && assets.length === 0 && (
                         <p className="text-center text-gray-500 py-6">
                             No assets found
                         </p>
                     )}
+
                 </div>
             </div>
         </>
