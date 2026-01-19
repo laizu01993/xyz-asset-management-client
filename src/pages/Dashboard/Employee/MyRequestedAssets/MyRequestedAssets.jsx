@@ -4,9 +4,14 @@ import { Search, XCircle, RotateCcw, Printer } from "lucide-react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Skeleton from "react-loading-skeleton";
 import { Helmet } from "react-helmet-async";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import AssetPrintPDF from "./AssetPrintPDF";
+import useUserData from "../../../../hooks/useUserData";
+import Swal from "sweetalert2";
 
 const MyRequestedAssets = () => {
     const axiosSecure = useAxiosSecure();
+    const [userData] = useUserData();
 
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("");
@@ -24,13 +29,40 @@ const MyRequestedAssets = () => {
 
     // cancel request
     const handleCancel = async (id) => {
+        const result = await Swal.fire({
+            title: "Cancel Request?",
+            text: "Are you sure you want to cancel this request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, cancel it",
+        });
+
+        if (!result.isConfirmed) return;
+
         await axiosSecure.patch(`/employee/cancel-request/${id}`);
+
+        Swal.fire("Cancelled!", "Your request has been cancelled.", "success");
+        setStatus("")
         refetch();
     };
 
+
     // return asset
     const handleReturn = async (id) => {
+        const result = await Swal.fire({
+            title: "Return Asset?",
+            text: "Are you sure you want to return this asset?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, return",
+        });
+
+        if (!result.isConfirmed) return;
+
         await axiosSecure.patch(`/employee/return-asset/${id}`);
+
+        Swal.fire("Returned!", "Asset returned successfully.", "success");
+        setStatus("")
         refetch();
     };
 
@@ -133,7 +165,8 @@ const MyRequestedAssets = () => {
                                         {item.status === "pending" && (
                                             <button
                                                 onClick={() => handleCancel(item._id)}
-                                                className="btn btn-sm btn-error"
+                                                className="btn btn-sm btn-error tooltip"
+                                                data-tip="Cancel Request"
                                             >
                                                 <XCircle size={16} />
                                             </button>
@@ -141,14 +174,22 @@ const MyRequestedAssets = () => {
 
                                         {item.status === "approved" && (
                                             <>
-                                                <button className="btn btn-sm btn-outline">
-                                                    <Printer size={16} />
-                                                </button>
+                                                <PDFDownloadLink
+                                                    document={<AssetPrintPDF item={item} company={userData} />}
+                                                    fileName="asset-details.pdf"
+                                                >
+                                                    <button className="btn btn-sm btn-outline tooltip"
+                                                        data-tip="Print Asset Details">
+                                                        <Printer size={16} />
+                                                    </button>
+                                                </PDFDownloadLink>
 
-                                                {item.type === "returnable" && (
+
+                                                {item.type === "Returnable" && item.status === "approved" && (
                                                     <button
                                                         onClick={() => handleReturn(item._id)}
-                                                        className="btn btn-sm btn-warning"
+                                                        className="btn btn-sm btn-warning tooltip"
+                                                        data-tip="Return Asset"
                                                     >
                                                         <RotateCcw size={16} />
                                                     </button>

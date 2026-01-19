@@ -66,6 +66,7 @@ const AddEmployee = () => {
                 <title>HR | Add Employee</title>
             </Helmet>
             <div className="p-6 space-y-8">
+                <h2 className="text-3xl font-bold text-blue-600 text-center">Add Employee</h2>
 
                 {/* ================= PACKAGE SECTION ================= */}
                 <div className="bg-white rounded-xl shadow p-6 flex justify-between items-center">

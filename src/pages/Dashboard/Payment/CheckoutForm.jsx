@@ -5,24 +5,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ amount, teamLimit, from }) => {
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
-    const location = useLocation();
-
-    // coming from signup or upgrade page
-    const { amount, teamLimit, from } = location.state || {};
-
-    if (!amount || !teamLimit || !from) {
-        return (
-            <p className="text-center text-red-500">
-                Invalid payment request
-            </p>
-        );
-    }
-
 
     const [error, setError] = useState("");
     const [processing, setProcessing] = useState(false);
