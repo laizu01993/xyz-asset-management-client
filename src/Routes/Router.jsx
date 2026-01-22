@@ -24,12 +24,14 @@ import UpdateAsset from "../pages/Dashboard/HR/UpdateAsset/UpdateAsset";
 import UpgradePackage from "../pages/Dashboard/HR/AddEmployee/UpgradePackage";
 import MyRequestedAssets from "../pages/Dashboard/Employee/MyRequestedAssets/MyRequestedAssets";
 import Payment from "../pages/Dashboard/Payment/Payment";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement:<ErrorPage></ErrorPage>,
     children: [
         {
             path: '/',

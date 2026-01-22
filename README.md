@@ -1,16 +1,116 @@
-# React + Vite
+# XYZ Asset Management Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive **Asset Management Frontend Application** built with **React, Vite, Tailwind CSS, DaisyUI**, and **Firebase Authentication**.  
+This application allows HR managers and employees to manage company assets efficiently with role-based access and a clean user experience.
 
-Currently, two official plugins are available:
+🔗 **Live Website**  
+https://xyz-asset-management.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🔐 Authentication & Authorization
+- Firebase Authentication (Email/Password & Google)
+- JWT-based secure API communication
+- Role-based routing (**HR / Employee**)
+- Protected & private routes
+- Unauthorized & error handling pages
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🏢 Dynamic Company Branding
+- Dynamic company logo support
+- Fallback service provider logo (**XYZ**) if no company is assigned
+- Tooltip shows full company name on hover
+- Assignment-compliant dynamic navbar behavior
+
+---
+
+### 👤 User Experience
+- Responsive design for all devices
+- Skeleton loaders & smooth transitions
+- Toast notifications for actions & errors
+- Professional 404 error page
+- SEO support using React Helmet
+
+---
+
+### 🧾 Asset Management
+- Asset listing with search, filter & sort
+- Asset request system (Employee)
+- Request approval & rejection (HR)
+- Returnable & non-returnable asset handling
+- Monthly request tracking
+
+---
+
+### 📊 Dashboard & Analytics
+- HR dashboard with statistics
+- Charts & visual reports using Recharts
+- Top requested assets overview
+- Pending request summaries
+
+---
+
+### 👥 Team Management (HR)
+- Add/remove employees
+- Team size limit enforcement
+- Free employee discovery
+- Package-based team expansion
+
+---
+
+### 💳 Payment Integration
+- Stripe payment integration
+- Secure checkout for HR package upgrades
+- Payment history display
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React 18
+- Vite
+- React Router DOM
+- Tailwind CSS
+- DaisyUI
+- Framer Motion
+- React Query (TanStack)
+- Axios
+- Firebase Authentication
+- Stripe (Frontend SDK)
+
+---
+
+## 🌍 Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_API_URL=https://asset-management-api-tf4m.onrender.com
+VITE_FIREBASE_API_KEY=your_firebase_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_public_key
+
+▶️ Run Locally
+npm install
+npm run dev
+
+🏗️ Build for Production
+npm run build
+
+🔗 Backend API
+
+Live API:
+https://asset-management-api-tf4m.onrender.com
+
+👨‍💻 Author
+Shahanara Aktar Laizu
+Full Stack Developer
+React • Node.js • MongoDB • Firebase • Stripe
