@@ -4,7 +4,7 @@ A modern, responsive **Asset Management Frontend Application** built with **Reac
 This application allows HR managers and employees to manage company assets efficiently with role-based access and a clean user experience.
 
 🔗 **Live Website**  
-https://xyz-asset-management.vercel.app/
+https://xyz-asset-management.vercel.app
 
 ---
 
