@@ -51,68 +51,58 @@ const AuthProvider = ({ children }) => {
     }
     // observer
     // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, currentUser => {
-    //         setUser(currentUser);
-    //         // if (currentUser) {
-    //         //     // get token and store client
-    //         //     const userInfo = {
+    //     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    //         setLoading(true)
 
-    //         //         email: currentUser.email.toLowerCase().trim() };
-    //         //     axiosPublic.post('/jwt', userInfo)
-    //         //         .then(res => {
-    //         //             if (res.data.token) {
-    //         //                 localStorage.setItem('access-token', res.data.token)
-    //         //             }
-    //         //         })
-    //         // }
-    //         if (currentUser) {
+    //         setUser(currentUser);
+
+    //         if (currentUser?.email) {
     //             const userInfo = {
     //                 name: currentUser.displayName || "Anonymous",
     //                 email: currentUser.email.toLowerCase().trim(),
-    //                 role: "employee" // default role
+    //                 role: "employee",
     //             };
 
-    //             // 1️. ensure MongoDB user exists
-    //             axiosPublic.post('/users', userInfo);
+    //             try {
+    //                 // ensure user exists in DB
+    //                 await axiosPublic.post('/users', userInfo);
 
-    //             // 2️. get JWT
-    //             axiosPublic.post('/jwt', { email: userInfo.email })
-    //                 .then(res => {
-    //                     if (res.data.token) {
-    //                         localStorage.setItem('access-token', res.data.token);
-    //                     }
-    //                     setLoading(false);
+    //                 // get JWT
+    //                 const res = await axiosPublic.post('/jwt', {
+    //                     email: userInfo.email,
     //                 });
+
+    //                 if (res.data.token) {
+    //                     localStorage.setItem('access-token', res.data.token);
+    //                 }
+    //             } catch (error) {
+    //                 console.error("Auth sync failed", error);
+    //             }
+    //         } else {
+    //             localStorage.removeItem('access-token');
     //         }
 
-
-    //         else {
-    //             // remove token
-    //             localStorage.removeItem('access-token')
-    //         }
+    //         //Set loading false AFTER EVERYTHING
     //         setLoading(false);
-    //         console.log('current user', currentUser);
     //     });
-    //     return () => {
-    //         return unsubscribe();
-    //     }
-    // }, [axiosPublic])
+
+    //     return () => unsubscribe();
+    // }, [axiosPublic]);
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+
             setUser(currentUser);
 
-            if (currentUser) {
-                const userInfo = {
-                    name: currentUser.displayName || "Anonymous",
-                    email: currentUser.email.toLowerCase().trim(),
-                    role: "employee",
-                };
-
+            if (currentUser?.email) {
                 try {
-                    // ensure user exists in DB
+                    const userInfo = {
+                        name: currentUser.displayName || "Anonymous",
+                        email: currentUser.email.toLowerCase().trim(),
+                        role: "employee",
+                    };
+
                     await axiosPublic.post('/users', userInfo);
 
-                    // get JWT
                     const res = await axiosPublic.post('/jwt', {
                         email: userInfo.email,
                     });
@@ -120,6 +110,7 @@ const AuthProvider = ({ children }) => {
                     if (res.data.token) {
                         localStorage.setItem('access-token', res.data.token);
                     }
+
                 } catch (error) {
                     console.error("Auth sync failed", error);
                 }
@@ -127,13 +118,11 @@ const AuthProvider = ({ children }) => {
                 localStorage.removeItem('access-token');
             }
 
-            //Set loading false AFTER EVERYTHING
-            setLoading(false);
+            setLoading(false); 
         });
 
         return () => unsubscribe();
     }, [axiosPublic]);
-
 
     const authInfo = {
         user,
