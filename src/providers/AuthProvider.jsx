@@ -1,7 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import { io } from "socket.io-client";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AuthContext = createContext(null);
 
@@ -13,81 +15,93 @@ const AuthProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
 
+    const socketRef = useRef(null);
+
+    const queryClient = useQueryClient();
+
     const googleProvider = new GoogleAuthProvider();
 
     const axiosPublic = useAxiosPublic();
 
+    // Socket Connect
+    useEffect(() => {
+        socketRef.current = io("https://asset-management-api-tf4m.onrender.com", {
+            transports: ["websocket"],
+            reconnection: true
+        });
 
-    // create user
+        return () => {
+            socketRef.current?.disconnect();
+        };
+    }, []);
+
+    // Join + Listen
+    const [newNotification, setNewNotification] = useState(null);
+
+    useEffect(() => {
+        if (!socketRef.current || !user?.email) return;
+
+        const socket = socketRef.current;
+
+        const handleNotification = (data) => {
+            console.log("New notification:", data);
+
+            // Real-time update
+            queryClient.invalidateQueries({
+                queryKey: ["notifications"],
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ["unread-count"],
+            });
+
+            setNewNotification(data);
+        };
+
+        if (user?.email) {
+            socket.emit("join", user.email);
+        }
+
+        socket.on("new-notification", handleNotification);
+
+        return () => {
+            socket.off("connect");
+            socket.off("new-notification", handleNotification);
+        };
+    }, [user]);
+
+    // Create user
     const createUser = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    // sign in user
+    // Sign in user
     const logIn = (email, password) => {
         setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
-    // sign in with google
+    // Sign in with google
     const googleSignIn = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     }
 
-    // log out user
+    // Log out user
     const logOut = () => {
         setLoading(true);
         return signOut(auth)
     }
 
-    // update user profile
+    // Update user profile
     const updateUserProfile = (name, photo) => {
         return updateProfile(auth.currentUser, {
             displayName: name,
             photoURL: photo
         })
     }
-    // observer
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-    //         setLoading(true)
-
-    //         setUser(currentUser);
-
-    //         if (currentUser?.email) {
-    //             const userInfo = {
-    //                 name: currentUser.displayName || "Anonymous",
-    //                 email: currentUser.email.toLowerCase().trim(),
-    //                 role: "employee",
-    //             };
-
-    //             try {
-    //                 // ensure user exists in DB
-    //                 await axiosPublic.post('/users', userInfo);
-
-    //                 // get JWT
-    //                 const res = await axiosPublic.post('/jwt', {
-    //                     email: userInfo.email,
-    //                 });
-
-    //                 if (res.data.token) {
-    //                     localStorage.setItem('access-token', res.data.token);
-    //                 }
-    //             } catch (error) {
-    //                 console.error("Auth sync failed", error);
-    //             }
-    //         } else {
-    //             localStorage.removeItem('access-token');
-    //         }
-
-    //         //Set loading false AFTER EVERYTHING
-    //         setLoading(false);
-    //     });
-
-    //     return () => unsubscribe();
-    // }, [axiosPublic]);
+    // Observer
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
 
@@ -118,7 +132,7 @@ const AuthProvider = ({ children }) => {
                 localStorage.removeItem('access-token');
             }
 
-            setLoading(false); 
+            setLoading(false);
         });
 
         return () => unsubscribe();
@@ -131,7 +145,8 @@ const AuthProvider = ({ children }) => {
         logIn,
         googleSignIn,
         logOut,
-        updateUserProfile
+        updateUserProfile,
+        newNotification
     }
     return (
         <AuthContext.Provider value={authInfo}>
