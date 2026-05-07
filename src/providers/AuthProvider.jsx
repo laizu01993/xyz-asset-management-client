@@ -26,8 +26,8 @@ const AuthProvider = ({ children }) => {
     // Socket Connect
     useEffect(() => {
         socketRef.current = io("https://asset-management-api-tf4m.onrender.com", {
-            transports: ["websocket"],
-            reconnection: true
+            reconnection: true,
+            transports: ["polling", "websocket"]
         });
 
         return () => {
@@ -40,6 +40,8 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (!socketRef.current || !user?.email) return;
+
+        socketRef.current.connect();
 
         const socket = socketRef.current;
 
@@ -65,7 +67,7 @@ const AuthProvider = ({ children }) => {
         socket.on("new-notification", handleNotification);
 
         return () => {
-            socket.off("connect");
+            
             socket.off("new-notification", handleNotification);
         };
     }, [user]);
@@ -91,6 +93,9 @@ const AuthProvider = ({ children }) => {
     // Log out user
     const logOut = () => {
         setLoading(true);
+
+        socketRef.current?.disconnect();
+
         return signOut(auth)
     }
 

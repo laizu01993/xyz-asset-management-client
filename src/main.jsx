@@ -20,8 +20,8 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <RouterProvider router={router} />
           <ToastContainer
             position="top-right"
@@ -33,9 +33,8 @@ createRoot(document.getElementById('root')).render(
             pauseOnFocusLoss
             draggable
             pauseOnHover></ToastContainer>
-        </QueryClientProvider>
-
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </HelmetProvider>
   </StrictMode>,
 )
