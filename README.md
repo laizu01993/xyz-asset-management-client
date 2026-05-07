@@ -45,6 +45,13 @@ https://xyz-asset-management.vercel.app
 
 ---
 
+### 🔔 Real-time Notifications
+- Real-time notification system using Socket.IO
+- Instant HR & Employee notification updates
+- Live unread notification count updates
+- Room-based socket communication using user email
+- React Query synchronization with Socket.IO events
+
 ### 📊 Dashboard & Analytics
 - HR dashboard with statistics
 - Charts & visual reports using Recharts
@@ -81,6 +88,7 @@ https://xyz-asset-management.vercel.app
 - Axios
 - Firebase Authentication
 - Stripe (Frontend SDK)
+- Socket.IO Client (Real-time notifications)
 
 ---
 
