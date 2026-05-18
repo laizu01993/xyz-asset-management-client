@@ -48,6 +48,18 @@ const AuthProvider = ({ children }) => {
         const handleNotification = (data) => {
             console.log("New notification:", data);
 
+            // Toast popup
+            if (data.type === "success") {
+                toast.success(data.message);
+            }
+            else if (data.type === "error") {
+                toast.error(data.message);
+            }
+            else {
+                toast.info(data.message);
+            }
+
+
             // Real-time update
             queryClient.invalidateQueries({
                 queryKey: ["notifications"],
@@ -67,7 +79,7 @@ const AuthProvider = ({ children }) => {
         socket.on("new-notification", handleNotification);
 
         return () => {
-            
+
             socket.off("new-notification", handleNotification);
         };
     }, [user]);
