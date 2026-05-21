@@ -4,6 +4,7 @@ import { app } from "../firebase/firebase.config";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import { io } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
 
@@ -27,7 +28,15 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         socketRef.current = io("https://asset-management-api-tf4m.onrender.com", {
             reconnection: true,
-            transports: ["polling", "websocket"]
+            transports: ["polling", "websocket"],
+        });
+
+        socketRef.current.on("connect", () => {
+            console.log("Socket connected:", socketRef.current.id);
+        });
+
+        socketRef.current.on("disconnect", () => {
+            console.log("Socket disconnected");
         });
 
         return () => {
@@ -46,6 +55,7 @@ const AuthProvider = ({ children }) => {
         const socket = socketRef.current;
 
         const handleNotification = (data) => {
+            console.log("SOCKET RECEIVED:", data);
             console.log("New notification:", data);
 
             // Toast popup
